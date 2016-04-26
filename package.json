@@ -1,0 +1,25 @@
+{
+  "name": "angular-todo",
+  "version": "0.1.0",
+  "description": "I built this as an exercise to learn the basics of angular.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fraziermork/angular-todo.git"
+  },
+  "author": "Frazier Mork <fraziermork@gmail.com> (https://frazier-fibonacci.herokuapp.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fraziermork/angular-todo/issues"
+  },
+  "homepage": "https://github.com/fraziermork/angular-todo#readme",
+  "dependencies": {
+    "angular": "^1.5.5",
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.13"
+  }
+}

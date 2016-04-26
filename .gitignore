@@ -1,0 +1,5 @@
+node_modules
+test/bundles/*
+backend/db/*
+frontend/build/*
+npm-debug.log
