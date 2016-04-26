@@ -2,9 +2,16 @@
   "name": "angular-todo",
   "version": "0.1.0",
   "description": "I built this as an exercise to learn the basics of angular.",
-  "main": "index.js",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1", 
+    "start:db": "mongod -dbpath=./backend/db/ --smallfiles;", 
+    "start:servers": "nodemon backend/server.js;", 
+    "start:selenium": "webdriver-manager start;", 
+    "app:watch": "gulp app:watch;",
+    "test:api": "gulp test:api",
+    "test:unit": "gulp test:bundle-all; karma start;",
+    "test:e2e": "gulp test:bundle-all; protractor protractor-config.js;"
   },
   "repository": {
     "type": "git",

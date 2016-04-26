@@ -5,9 +5,9 @@ const express         = require('express');
 const bodyParser      = require('body-parser').json();
 const app             = express();
 
-const authMiddleware  = require(__dirname + '/lib/authentication');
-const loginRouter     = require(__dirname + '/routes/lists');
-const userRouter      = require(__dirname + '/routes/items');
+// const authMiddleware  = require(__dirname + '/lib/authentication');
+// const loginRouter     = require(__dirname + '/routes/lists');
+// const userRouter      = require(__dirname + '/routes/items');
 const listRouter      = require(__dirname + '/routes/lists');
 const itemRouter      = require(__dirname + '/routes/items');
 
@@ -48,6 +48,6 @@ db.once('open', () => {
   app.use('/items', itemRouter);
   app.listen(API_PORT, () => {
     console.log('----API LISTENING ON ' + API_PORT + '----');
-    require(__dirname + '/../frontend/server.js')(APP_PORT);
+    // require(__dirname + '/../frontend/server.js')(APP_PORT);
   });
 });
