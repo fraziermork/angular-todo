@@ -39,15 +39,16 @@ db.once('open', () => {
   // */
   
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:' + API_PORT);
+    res.header('Access-Control-Allow-Origin', 'http://localhost:' + APP_PORT);
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    next();
   });
   
   app.use('/lists', listRouter);
   app.use('/items', itemRouter);
   app.listen(API_PORT, () => {
     console.log('----API LISTENING ON ' + API_PORT + '----');
-    // require(__dirname + '/../frontend/server.js')(APP_PORT);
+    require(__dirname + '/../frontend/server.js')(APP_PORT);
   });
 });

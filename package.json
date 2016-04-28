@@ -4,10 +4,10 @@
   "description": "I built this as an exercise to learn the basics of angular.",
   "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
-    "start:db": "mongod -dbpath=./backend/db/ --smallfiles;", 
-    "start:servers": "nodemon backend/server.js;", 
-    "start:selenium": "webdriver-manager start;", 
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:db": "mongod -dbpath=./backend/db/ --smallfiles;",
+    "start:servers": "nodemon backend/server.js;",
+    "start:selenium": "webdriver-manager start;",
     "app:watch": "gulp app:watch;",
     "test:api": "gulp test:api",
     "test:unit": "gulp test:bundle-all; karma start;",
@@ -25,6 +25,7 @@
   "homepage": "https://github.com/fraziermork/angular-todo#readme",
   "dependencies": {
     "angular": "^1.5.5",
+    "angular-route": "^1.5.5",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "mongoose": "^4.4.13"
