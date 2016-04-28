@@ -1,0 +1,19 @@
+<ul>
+  
+  <li data-ng-repeat="list in allCtrl.lists">
+    <p>
+      LIST SUMMARY GOES HERE
+    </p>
+  </li>
+  
+  <li data-ng-show="allCtrl.addListFormVisible">
+    <form class="" novalidate>
+      <input type="text" name="name" type="name" placeholder="Name: " data-ng-model="allCtrl.newList.newListName" required>
+      <input type="text" name="name" type="description" placeholder="Description: " data-ng-model="allCtrl.newList.newListDesc">
+      <span></span>
+    </form>
+    <!-- <button type="button" name="button" data-ng-bind=""></button> -->
+    <button type="button" name="button" data-ng-bind="allCtrl.addListButText"></button>
+  </li>
+  
+</ul>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html data-ng-app="todo-app">
+  
+  <head>
+    <meta charset="utf-8">
+    <title>Todo Lists</title>
+    <link rel="stylesheet" href="style.css" charset="utf-8">
+  </head>
+  
+  <body data-ng-controller="MainController as ctrl" data-ng-init="ctrl.initialize()">
+    
+    Test: {{ 1 + 1 }}
+    {{ ctrl.test }}
+    
+    <nav>
+      <a href="#">BACK TO ALL LISTS</a>
+    </nav>
+    
+    <main data-ng-view>LOADING</main>
+    
+    <script type="text/javascript" src="bundle.js"></script>
+  </body>
+  
+</html>
