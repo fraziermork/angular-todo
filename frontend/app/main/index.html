@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Todo Lists</title>
     <link rel="stylesheet" href="style.css" charset="utf-8">
+    <base href="/" />
   </head>
   
   <body data-ng-controller="MainController as ctrl" data-ng-init="ctrl.initialize()">
@@ -13,7 +14,7 @@
     {{ ctrl.test }}
     
     <nav>
-      <a href="#">BACK TO ALL LISTS</a>
+      <a href="#/lists">BACK TO ALL LISTS</a>
     </nav>
     
     <main data-ng-view>LOADING</main>

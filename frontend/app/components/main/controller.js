@@ -7,13 +7,13 @@
 (function(){
   // Define the main application and require in dependencies
   // Dependencies start with built-ins, then services, then individual modules
-  var app = angular.module('todo-app', ['ngRoute', 'dataServiceModule', 'allModule']);
+  var app = angular.module('todo-app', ['ngRoute', 'dataServiceModule', 'allModule', 'listModule']);
   
   //attach controller for main view
   app.controller('MainController', ['$log', 'dataService', MainController]);
   
   //attach angular routing
-  app.config(['$routeProvider', mainRouter]);
+  app.config(['$routeProvider', '$locationProvider', mainRouter]);
   
   
   
@@ -28,35 +28,53 @@
     /////////////////////////////////////
     // Load data for all lists from db
     function initialize() {
-      $log.log('MainController initialize ');
+      $log.info('MainController initialize ');
       vm.test = 'SUCCESS';
       
-      dataService.initialize();
+      //TODO: change this once auth implemented
+      dataService.getLists();
     }
     
   }
   
   ////////////////////////////////////////////////////////
   
-  function mainRouter($routeProvider) {
+  function mainRouter($routeProvider, $locationProvider) {
     $routeProvider
     
       /////////////////////////////////////
-      // Route for home page showing all lists
-      .when('/', {
-        controller: 'allController',
+      // Route for all lists view
+      .when('/lists', {
+        controller:   'allController',
         controllerAs: 'allCtrl',
-        templateUrl: 'all/all-view.html'
+        templateUrl:  'all/all-view.html'
       })
       
       /////////////////////////////////////
-      // Route for an individual list's page
-      .when('/lists/:id', {
-        controller: 'listController',
+      // Route for an individual list's view
+      .when('/lists/:listId', {
+        controller:   'listController',
         controllerAs: 'listCtrl',
-        templateUrl: 'all/list-view.html'
+        templateUrl:  'list/list-view.html'
       });
-        
+      
+      /////////////////////////////////////
+      // Route for the login / user creation view
+      // .when('/login', {
+      //   controller:    'loginController',
+      //   controllerAs:  'loginCtrl',
+      //   templateUrl:   'login/login-view.html'
+      // });
+      
+      /////////////////////////////////////
+      // Default to user creation / login view
+      // .otherwise('/', {
+      //   redirectTo: '/login'
+      // });  
+  
+  
+  
+    $locationProvider.html5Mode(true);
   }
   
 })();
