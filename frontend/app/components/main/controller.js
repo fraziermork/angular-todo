@@ -7,7 +7,7 @@
 (function(){
   // Define the main application and require in dependencies
   // Dependencies start with built-ins, then services, then individual modules
-  var app = angular.module('todo-app', ['ngRoute', 'dataServiceModule', 'allModule', 'listModule']);
+  var app = angular.module('todo-app', ['ngRoute', 'dataServiceModule', 'itemModule', 'listModule', 'allModule']);
   
   //attach controller for main view
   app.controller('MainController', ['$log', 'dataService', MainController]);
@@ -73,8 +73,8 @@
       // });  
   
   
-  
-    $locationProvider.html5Mode(true);
+    // TODO: reimplement
+    // $locationProvider.html5Mode(true);
   }
   
 })();

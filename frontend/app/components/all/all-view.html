@@ -1,29 +1,16 @@
 <section>
   <ul>
+    <li>
+      <form novalidate data-ng-show="allCtrl.addListFormVisible">
+        <input type="text" name="name"        placeholder="Name: "        data-ng-model="allCtrl.newList.name" required/>
+        <input type="text" name="description" placeholder="Description: " data-ng-model="allCtrl.newList.description"/>
+        <button type="button" name="addListButton" data-ng-click="allCtrl.addListFormHandler()">Save</button>
+      </form>
+      <button type="button" name="showAddListButton" data-ng-bind="allCtrl.addListButText" data-ng-click="allCtrl.toggleAddListFormVisible()"></button>
+    </li>
     
     <li data-ng-repeat="list in allCtrl.lists">
       <list-summary data-list="list"><list-summary>
-      </li>
-      
-      <li>
-        <form novalidate data-ng-show="allCtrl.addListFormVisible">
-          <input 
-          type="text" 
-          name="name" 
-          placeholder="Name: " 
-          data-ng-model="allCtrl.newList.name" 
-          required 
-          />
-          <input 
-          type="text" 
-          name="description" 
-          placeholder="Description: " 
-          data-ng-model="allCtrl.newList.description" 
-          />
-          <button type="button" name="saveListButton" data-ng-click="allCtrl.addListFormHandler()">Save</button>
-        </form>
-        <button type="button" name="addListButton" data-ng-bind="allCtrl.addListButText" data-ng-click="allCtrl.toggleAddListFormVisible()"></button>
-      </li>
-      
-    </ul>
+    </li>
+  </ul>
 </section>

@@ -4,12 +4,17 @@
 (function(){
   
   angular.module('itemModule')
-    .directive('oneItem', oneItem);
+    .directive('listItem', listItem);
   
-  function oneItem() {
+  function listItem() {
     return {
       restrict: 'E',
-      templateUrl: ''
+      templateUrl: '', 
+      controller: 'itemController', 
+      controllerAs: 'itemCtrl', 
+      scope: {
+        item: '='
+      }
     };
   }
   

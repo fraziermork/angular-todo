@@ -8,14 +8,13 @@
   function dataService($http, $log) {
     const dataService       = {};
     dataService.lists       = [];
-    dataService.list        = [];
     
     // CRUD methods for lists
     dataService.getLists    = getLists;
     dataService.createList  = createList;
-    dataService.getList     = getList;
-    // dataService.updateList  = updateList;
-    // dataService.deleteList  = deleteList;
+    dataService.updateList  = updateList;
+    dataService.deleteList  = deleteList;
+    // dataService.getList     = getList;
     
     // CRUD methods for items
     // dataService.getItem     = getItem;
@@ -115,32 +114,40 @@
     
     
     
-    function getList(listId, cb) {
-      $log.info('dataService getOneList');
-      
-      methodToResource('get', 'lists', null, listId)
-        .then((data) => {
-          dataService.list = data;
-          cb && cb(null, dataService.list);  
-        })
-        .catch((err) => {
-          $log.error('Could not retrieve list with id ' + listId);
-          cb && cb(err);  
-        });
-      
+    // function getList(listId, cb) {
+    //   $log.info('dataService getList');
+    //     
+    //   methodToResource('get', 'lists', null, listId)
+    //     .then((data) => {
+    //       // put that list into dataService.lists
+    //       dataService.lists = dataService.lists.map((list) => {
+    //         if (list._id === data._id) {
+    //           return data;
+    //         } else {
+    //           return list;
+    //         }
+    //       });
+    //       cb && cb(null, data);  
+    //     })
+    //     .catch((err) => {
+    //       $log.error('Could not retrieve list with id ' + listId);
+    //       cb && cb(err);  
+    //     });
+    //   
+    // }
+    
+    
+    
+    function updateList() {
+      $log.info('dataService updateList');
     }
     
     
     
-    // function updateList() {
-    //   
-    // }
-    
-    
-    
-    // function deleteList() {
-    //   
-    // }
+    function deleteList(listId, cb) {
+      $log.info('dataService deleteList');
+      cb && cb();
+    }
     
     
     
@@ -156,6 +163,7 @@
       
       
     }
+    
     
     // function updateItem() {
     //   

@@ -12,7 +12,7 @@ router.route('/')
 
   .get((req, res) => {
     console.log('GET lists');
-    List.find({}).populate('items', 'name _id')
+    List.find({}).populate('items')
       .exec((err, lists) => {
         if(err) {
           console.log('Error getting lists: ', err);

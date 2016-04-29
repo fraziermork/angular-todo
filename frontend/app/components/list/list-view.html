@@ -4,33 +4,30 @@
   <h3 data-ng-bind="listCtrl.list.description"></h3>
   
   <!-- edit list -->
-  <button type="button" name="button" data-ng-click="" data-ng-bind="listCtrl.editListButText"></button>
-  <form class="" novalidate data-ng-show="listCtrl.editListFormVisible">
+  <button type="button" name="showEditListButton" data-ng-click="listCtrl.toggleEditListVis()" data-ng-bind="listCtrl.editListButText"></button>
+  <form novalidate data-ng-show="listCtrl.editListFormVisible">
     <input type="text" name="name" placeholder="Name: " data-ng-model="listCtrl.tempList.name" required>
     <input type="text" name="description" placeholder="Description: " data-ng-model="listCtrl.tempList.description">
     
     <!-- delete list button -->
-    <button type="button" name="button"></button>
+    <button type="button" name="button" data-ng-click="listCtrl.deleteListHandler()">Delete this list</button>
     
     <!-- save changes button -->
-    <button type="button" name="button"></button>
+    <button type="button" name="editListButton" data-ng-click="listCtrl.editListFormHandler()">Save Changes</button>
   </form>
   
   <ul>
     <li>
       <!-- add item -->
-      <button type="button" name="button" data-ng-click="" data-ng-bind="listCtrl.addItemButText"></button>
-      <form class="" novalidate data-ng-show="listCtrl.addItemFormVisible">
+      <button type="button" name="showAddItemButton" data-ng-click="listCtrl.toggleAddItemVis()" data-ng-bind="listCtrl.addItemButText"></button>
+      <form novalidate data-ng-show="listCtrl.addItemFormVisible">
         <input type="text" name="name" placeholder="Name: " data-ng-model="listCtrl.tempItem.name" required>
         <input type="text" name="description" placeholder="Description: " data-ng-model="listCtrl.tempItem.description">
         Due date: <input type="date"      name="dueDate"  data-ng-model="listCtrl.tempItem.dueDate" />
         <!-- Complete: <input type="checkbox"  name="complete" data-ng-model="listCtrl.tempItem.complete" value="complete" /> -->
         
-        <!-- delete item button -->
-        <button type="button" name="button"></button>
-        
         <!-- save item button -->
-        <button type="button" name="button"></button>
+        <button type="button" name="addItemButton" data-ng-click="listCtrl.addItemFormHandler()">Save</button>
       </form>
     </li>
     
@@ -39,6 +36,7 @@
       <p>
         LIST ITEM GOES HERE
       </p>
+      <!-- <list-item item="item"></list-item> -->
     </li>
     
   </ul>
