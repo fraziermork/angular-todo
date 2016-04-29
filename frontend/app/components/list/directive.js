@@ -12,10 +12,7 @@
       restrict: 'E',
       templateUrl: 'list/list-summary-view.html', 
       controller: 'listSummaryController', 
-      controllerAs: 'listSumCtrl', 
-      scope: {
-        list: '='
-      }
+      controllerAs: 'listSumCtrl'
     };
   }
   

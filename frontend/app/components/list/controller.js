@@ -2,7 +2,7 @@
 /* global angular */
 
 (function(){
-  angular.module('listModule', [])
+  angular.module('listModule', ['dataServiceModule', 'itemModule'])
     .controller('listController', ['$log', '$location', '$routeParams', 'dataService', listController])
     .controller('listSummaryController', ['$log', listSummaryController]);
   
@@ -14,29 +14,33 @@
   
   function listController($log, $location, $routeParams, dataService) {
     //INITIAL VARIABLE DECLARATION
-    const vm                = this;
-    vm.listId               = $routeParams.listId;
-    vm.list                 = dataService.lists.filter(list => list._id === vm.listId)[0];
-    vm.items                = vm.list.items;
+    const vm                  = this;
+    vm.listId                 = $routeParams.listId;
+    $log.debug(dataService.lists);
+    $log.debug(typeof dataService.lists);
+    vm.list                   = dataService.lists.filter(list => list._id === vm.listId)[0];
+    vm.items                  = vm.list.items;
     
     // EDIT THE LIST
-    vm.editListButText      = 'Edit or delete this list';
-    vm.editListFormVisible  = false;
-    vm.tempList             = {};
-    vm.tempList.name        = vm.list.name;
-    vm.tempList.description = vm.list.description;
-    vm.toggleEditListVis    = toggleEditListVis;
-    vm.editListFormHandler  = editListFormHandler;
-    vm.deleteListHandler    = deleteListHandler;
+    vm.editListButText        = 'Edit or delete this list';
+    vm.editListFormVisible    = false;
+    vm.tempList               = {};
+    vm.tempList.name          = vm.list.name;
+    vm.tempList.description   = vm.list.description;
+    vm.toggleEditListVis      = toggleEditListVis;
+    vm.editListFormHandler    = editListFormHandler;
+    vm.deleteListHandler      = deleteListHandler;
     
     // ADD AN ITEM
-    vm.addItemButText       = 'Make a new item';
-    vm.addItemFormVisible   = false;
-    vm.tempItem             = {};
-    vm.tempItem.name        = null;
-    vm.tempItem.description = null;
-    vm.addItemFormHandler   = addItemFormHandler;
-    vm.toggleAddItemVis     = toggleAddItemVis;
+    vm.addItemButText         = 'Make a new item';
+    vm.addItemFormVisible     = false;
+    vm.tempItem               = {};
+    vm.tempItem.name          = null;
+    vm.tempItem.description   = null;
+    vm.tempItem.dueDate       = null;
+    vm.tempItem.creationDate  = null;
+    vm.addItemFormHandler     = addItemFormHandler;
+    vm.toggleAddItemVis       = toggleAddItemVis;
     
     // OTHER METHODS
     // vm.initialize           = initialize;
@@ -67,14 +71,18 @@
     
     function editListFormHandler() {
       $log.info('listController editListFormHandler');
-      if (vm.tempItem.name) {
+      if (vm.tempList.name) {
         // overwrite the properties locally
-        vm.list.name        = vm.tempItem.name;
-        vm.list.description = vm.tempItem.description;
+        vm.list.name            = vm.tempList.name;
+        vm.list.description     = vm.tempList.description;
+        
+        // hide form
+        vm.editListFormVisible  = false;
+        vm.editListButText      = 'Edit or delete this list';
+        
         // update the list in the database
         dataService.updateList(vm.listId, vm.list, () => {
           $log.log('listController editListFormHandler callback');
-          
         });
       } 
     }
@@ -104,27 +112,49 @@
     
     function addItemFormHandler() {
       $log.info('listController addItemFormHandler');
-      dataService.createItem(vm.listId, vm.tempItem, () => {
-        $log.log('listController addItemFormHandler callback');
-
-      });
-      
-      vm.tempItem             = {};
-      vm.tempItem.name        = null;
-      vm.tempItem.description = null;
-      
+      // Only act if they put in a name b/c it's required
+      if (vm.tempItem.name) {
+        // Add the new item locally
+        vm.tempItem.creationDate  = Date.now();
+        vm.tempItem._id           = 'newItem';
+        vm.tempItem.lists         = [vm.listId];
+        vm.items.push(vm.tempItem);
+        
+        // Update the database with the new item
+        dataService.createItem({newItem: vm.tempItem, updateIdNeeded: true}, (savedItem) => {
+          $log.log('listController addItemFormHandler callback');
+          vm.list   = dataService.lists.filter(list => list._id === vm.listId)[0];
+          vm.items  = vm.list.items;
+        });
+        
+        // Reinitialize conditions
+        vm.tempItem = {
+          name: null,
+          description: null,
+          creationDate: null,
+          dueDate: null
+        };
+        vm.addItemButText       = 'Make a new item';
+        vm.addItemFormVisible   = false;
+      }
     }
+    
+    
+    
+    
     
     function toggleAddItemVis() {
       $log.info('listController toggleAddItemVis');
       if (vm.addItemFormVisible) {
-        vm.editListFormVisible  = false;
+        vm.addItemFormVisible   = false;
         vm.addItemButText       = 'Make a new item';
       } else {
         vm.addItemFormVisible   = true;
         vm.addItemButText       = 'Cancel';
       }
     }
+    
+    
     
   }
   

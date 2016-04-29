@@ -11,10 +11,7 @@
       restrict: 'E',
       templateUrl: '', 
       controller: 'itemController', 
-      controllerAs: 'itemCtrl', 
-      scope: {
-        item: '='
-      }
+      controllerAs: 'itemCtrl'
     };
   }
   

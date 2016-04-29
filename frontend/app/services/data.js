@@ -26,6 +26,7 @@
     ////////////////////////////////////////////////////////////
     // Begin Methods
     
+    
     ////////////////////////////////////////////////////////////
     // Helper functions
     
@@ -68,6 +69,7 @@
       $log.info('dataService getLists');
       methodToResource('get', 'lists')
         .then((data) => {
+          $log.log(data);
           dataService.lists = data;
           cb && cb(null, data);
         })
@@ -81,33 +83,36 @@
     function createList(data, cb) {
       $log.info('dataService createList');
       
-      // Cache new list locally
-      data.newList._id          = 'newList';
-      data.newList.creationDate = Date.now();
-      dataService.lists.push(data.newList);
-      
       // Post to database and update id when complete
       methodToResource('post', 'lists', {
         name:         data.newList.name,
         description:  data.newList.description
       })
-        .then((data) => {
+        .then((response) => {
+          $log.info('create list success');
           // Update the id and creation date to match those stored in the database
-          let newList = dataService.lists.filter((list) => {
-            return list._id === 'newList';
-          })[0];
-          newList._id           = data._id;
-          newList.creationDate  = data.creationDate;
-          cb && cb(null, newList);  
+          $log.info('before adding new on, dataService.lists is ');
+          $log.log(dataService.lists);
+          dataService.lists = dataService.lists.map((list) => {
+            if (list._id === 'newList') {
+              return response;
+            } else {
+              return list;
+            }
+          });
+          $log.info('After create list, dataService.lists is ');
+          $log.log(dataService.lists);
+          cb && cb(null, response);  
         })
         .catch((err) => {
+          $log.error('create list failure');
           // If post fails, list given an error message and a unique id to prevent interference with future posting
           // TODO: make it delete the list instead? Implement a way for subsequent stuff to try to save it? 
           let newList = dataService.lists.filter((list) => {
             return list._id === 'newList';
           })[0];
           newList._id           = 'PostFailure' + Date.now();
-          newList.errorMessage  = 'Failed to save list.';
+          newList.errorMessage  = 'Failed to save this list.';
           cb && cb(err, newList);  
         });
     }
@@ -158,9 +163,43 @@
     //   
     // }
     
-    function createItem() {
+    function createItem(data, cb) {
       $log.info('dataService createItem');
-      
+      methodToResource('post', 'items', {
+        name:         data.newItem.name,
+        description:  data.newItem.description,
+        creationDate: data.newItem.creationDate, 
+        dueDate:      data.newItem.dueDate
+      })
+        .then((response) => {
+          // Grab the list that the item belongs to 
+          let list = dataService.lists.filter((list) => {
+            return list._id === data.newItem.lists[0];
+          })[0];
+          
+          // Update the items array with the new item
+          list.items = list.items.map((item) => {
+            if (item._id === 'newItem') {
+              return response;
+            } else {
+              return item;      
+            }
+          });
+          
+          cb && cb(null, response);
+        })
+        .catch((err) => {
+          // Grab the list that the item belongs to 
+          let list = dataService.lists.filter((list) => {
+            return list._id === data.newItem.lists[0];
+          })[0];
+          let item = list.items.filter((item) => {
+            return item._id === 'newItem';
+          })[0];
+          item._id          = 'PostFailure' + Date.now();
+          item.errorMessage = 'Failed to save this item.';
+          cb && cb(err, item);
+        });
       
     }
     

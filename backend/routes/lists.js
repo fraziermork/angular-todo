@@ -3,7 +3,7 @@
 const express = require('express');
 
 const Item    = require(__dirname + '/../models/item.js');
-const List    = require(__dirname + '/../models/item.js');
+const List    = require(__dirname + '/../models/list.js');
 
 let router    = express.Router();
 
@@ -14,10 +14,11 @@ router.route('/')
     console.log('GET lists');
     List.find({}).populate('items')
       .exec((err, lists) => {
-        if(err) {
+        if (err) {
           console.log('Error getting lists: ', err);
           return res.status(500).end({status: 'failure', message: 'Internal server error.'});
         } else {
+          console.log(lists);
           return res.status(200).json(lists);
         }
       });
@@ -26,8 +27,8 @@ router.route('/')
   .post((req, res) => {
     console.log('POST lists');
     console.log(req.body);
-    try{
-      if(req.body.name){
+    try {
+      if (req.body.name) {
         let newList = new List(req.body);
         newList.save((err, savedList) => {
           if(err) {
@@ -36,7 +37,7 @@ router.route('/')
           } else {
             console.log(newList.name + ' saved.');
             res.status(200).json(savedList);
-            if (newList.items.length > 0){
+            if (newList.items.length > 0) {
               console.log('Need to add list references to items.');
               newList.items.forEach((itemId) => {
                 Item.findOneAndUpdate({_id: itemId}, {$push: {'lists': newList._id}});

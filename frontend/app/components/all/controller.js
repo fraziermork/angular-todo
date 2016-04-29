@@ -3,9 +3,9 @@
 
 (function(){
   angular.module('allModule', ['dataServiceModule', 'listModule'])
-    .controller('allController', ['$log', '$location', 'dataService', allController]);
+    .controller('allController', ['$log', '$location', '$scope', 'dataService', allController]);
   
-  function allController($log, $location, dataService){
+  function allController($log, $location, $scope, dataService){
     const vm                    = this;
     vm.lists                    = dataService.lists;
     
@@ -14,39 +14,66 @@
     vm.postError                = null;
     vm.newList                  = {};
     vm.newList._id              = null;
+    vm.newList.creationDate     = null;
     vm.newList.name             = null;
     vm.newList.description      = null;
     
     vm.addListFormHandler       = addListFormHandler;
     vm.toggleAddListFormVisible = toggleAddListFormVisible;
     
+    
     ////////////////////////////////////////////////////////////
+    // Update the lists on the controller
+    // $scope.$watch(function(scope) {
+    //   return (dataService.lists);
+    // }, function(newLists, oldLists) {
+    //   console.log('__________________________________________');
+    //   console.log('DATA CHANGE: dataService.lists updated');
+    //   console.log('__________________________________________');
+    //   vm.lists = newLists;
+    // }, true);
+    
+    
+    ////////////////////////////////////////////////////////////
+    // Begin methods
     
     function addListFormHandler() {
       $log.info('allController addListFormHandler');
+      // $log.debug(vm.newList.name);
+      // $log.debug(vm.newList.description);
       
-      $log.debug(vm.newList.name);
-      $log.debug(vm.newList.description);
+      // Add the new list locally
+      vm.newList._id          = 'newList';
+      vm.newList.items        = [];
+      vm.newList.creationDate = Date.now();
+      vm.lists.push(vm.newList);
       
       dataService.createList({ newList: vm.newList, updateIdNeeded: true }, (err, createdList) => {
-        // Update the lists on the controller
-        vm.lists    = dataService.lists;
-        
-        // Reinitialize newList
-        vm.newList  = {
-          _id:          null,
-          name:         null,
-          description:  null
-        };
+        $log.log('allController addListFormHandler callback');
+        vm.lists = dataService.lists;
+        $scope.$digest();
         
         // TODO: should take you to list view for the list you just created?
-        $location.path(`/lists/${createdList._id}`);
+        // TODO: this isn't working
+        // $location.path(`#/lists/${createdList._id}`);
       });
+      
+      
+      
+      // Reinitialize conditions
+      vm.newList  = {
+        _id:          null,
+        name:         null,
+        description:  null, 
+        creationDate: null
+      };
+      vm.addListButText           = 'Add a new list';
+      vm.addListFormVisible       = false;
     }
     
     function toggleAddListFormVisible() {
       $log.info('allController toggleAddListFormVisible');
-      if(vm.addListFormVisible) {
+      if (vm.addListFormVisible) {
         vm.addListFormVisible = !vm.addListFormVisible;
         vm.addListButText     = 'Add a new list';
       } else {

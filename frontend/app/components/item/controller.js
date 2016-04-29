@@ -7,6 +7,8 @@
   
   function itemController($log, $scope, dataService) {
     const vm                = this;
+    vm.editItemFormVis      = false;
+    vm.editItemButText      = 'Edit this item';
     vm.itemId               = $scope.item._id;
     vm.tempItem             = {};
     vm.tempItem.name        = $scope.list.name;
@@ -22,8 +24,13 @@
     
     function toggleEditItemVis() {
       $log.log('itemController toggleEditItemVis');
-      
-      
+      if (vm.editItemFormVis) {
+        vm.editItemFormVis      = false;
+        vm.editItemButText      = 'Edit this item';   
+      } else {
+        vm.editItemFormVis      = true;
+        vm.editItemButText      = 'Cancel';   
+      }
     }
     
     function editItemFormHandler() {

@@ -1,9 +1,6 @@
 'use strict';
 /* global angular */
 
-
-//, 'listModule', 'itemModule'
-
 (function(){
   // Define the main application and require in dependencies
   // Dependencies start with built-ins, then services, then individual modules
@@ -14,8 +11,6 @@
   
   //attach angular routing
   app.config(['$routeProvider', '$locationProvider', mainRouter]);
-  
-  
   
   ////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////

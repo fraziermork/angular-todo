@@ -5,7 +5,7 @@
     <li data-ng-show="item.dueDate">Due date: <span data-ng-bind="item.dueDate"></span></li>
   </ul>
   
-  <button type="button" name="editItemButton" data-ng-bind="itemCtrl.toggleEditItemVis()"></button>
+  <button type="button" name="editItemButton" data-ng-bind="itemCtrl.editItemButText" data-ng-click="itemCtrl.toggleEditItemVis()"></button>
   <form novalidate data-ng-show="itemCtrl.editItemFormVis">
     <input type="text" name="name"        placeholder="Name: "        data-ng-model="itemCtrl.tempItem.name" required>
     <input type="text" name="description" placeholder="Description: " data-ng-model="itemCtrl.tempItem.description">
