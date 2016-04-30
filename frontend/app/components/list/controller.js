@@ -87,6 +87,7 @@
       } 
     }
     
+    
     function toggleEditListVis() {
       $log.info('listController toggleEditListVis');
       if (vm.editListFormVisible) {
@@ -154,6 +155,9 @@
         vm.addItemButText       = 'Cancel';
       }
     }
+    
+    
+    
     
     
     

@@ -126,6 +126,7 @@
     
     
     
+    
     function deleteList(listId, cb) {
       $log.info('dataService deleteList');
       cb && cb();
@@ -184,7 +185,7 @@
     
     function updateItem(data, cb) {
       $log.info('dataService updateItem');
-      methodToResource('put', 'items', data)
+      methodToResource('put', 'items', data.item, data.item._id)
         .then((response) => {
           // TODO: refactor in case an item belongs to more than one list?
           let list = dataService.lists.filter(list => list._id === data.item.lists[0])[0]; 

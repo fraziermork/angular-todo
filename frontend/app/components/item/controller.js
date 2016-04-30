@@ -53,7 +53,7 @@
       if (vm.deleteItemButText === 'Delete this item') {
         vm.deleteItemButText = 'Click again to confirm.';
       } else {
-        dataService.deleteItem(vm.itemId, () => {
+        dataService.deleteItem(vm.itemId, (err) => {
           $scope.$digest();
         });
       }

@@ -11,7 +11,7 @@
     <input type="text" name="name"        placeholder="Name: "        data-ng-model="itemCtrl.tempItem.name" required>
     <input type="text" name="description" placeholder="Description: " data-ng-model="itemCtrl.tempItem.description">
     Due date: <input type="date" name="dueDate" data-ng-model="itemCtrl.tempItem.dueDate" />
-    <button type="button" name="deleteItemButton" data-ng-click="itemCtrl.deleteItemHandler()"></button>
+    <button type="button" name="deleteItemButton" data-ng-click="itemCtrl.deleteItemHandler()" data-ng-bind="itemCtrl.deleteItemButText"></button>
     <button type="button" name="editItemButton"   data-ng-click="itemCtrl.editItemFormHandler()">Save changes</button>
   </form>
   

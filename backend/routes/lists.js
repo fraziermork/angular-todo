@@ -18,7 +18,7 @@ router.route('/')
           console.log('Error getting lists: ', err);
           return res.status(500).end({status: 'failure', message: 'Internal server error.'});
         } else {
-          console.log(lists);
+          // console.log(lists);
           return res.status(200).json(lists);
         }
       });
@@ -26,7 +26,7 @@ router.route('/')
   
   .post((req, res) => {
     console.log('POST lists');
-    console.log(req.body);
+    // console.log(req.body);
     try {
       if (req.body.name) {
         let newList = new List(req.body);
@@ -75,23 +75,23 @@ router.route('/:id')
   .put((req, res) => {
     console.log('PUT lists/:id');
     List.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}) //TODO: make it update users too
-    .populate('items').exec((err, savedList) => {
-      if(err) {
-        console.log('Error updating list: ', err);
-        return res.status(500).end({status: 'failure', message: 'Bad request.'});
-      } else {
-        console.log('Updated list ' + savedList.name + ' successfully.');
-        res.status(200).json(savedList);
-        savedList.items.forEach((itemId) => {
-          Item.findById(itemId, (err, savedItem) => {
-            if (savedItem.lists.indexOf(savedList._id) === -1) {
-              console.log('Need to update item with id ' + itemId + '.');
-              Item.findOneAndUpdate({_id: itemId}, {$push: {'items': savedList._id}});
-            }
+      .populate('items').exec((err, savedList) => {
+        if(err) {
+          console.log('Error updating list: ', err);
+          return res.status(500).end({status: 'failure', message: 'Bad request.'});
+        } else {
+          console.log('Updated list ' + savedList.name + ' successfully.');
+          res.status(200).json(savedList);
+          savedList.items.forEach((itemId) => {
+            Item.findById(itemId, (err, savedItem) => {
+              if (savedItem.lists.indexOf(savedList._id) === -1) {
+                console.log('Need to update item with id ' + itemId + '.');
+                Item.findOneAndUpdate({_id: itemId}, {$push: {'items': savedList._id}});
+              }
+            });
           });
-        });
-      }
-    });
+        }
+      });
   })
   
   .delete((req, res) => {
