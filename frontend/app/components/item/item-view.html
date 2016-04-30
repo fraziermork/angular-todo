@@ -1,17 +1,18 @@
 <article>
   <ul data-ng-hide="itemCtrl.editItemFormVis">
-    <li><h3 data-ng-bind="list.name"></h3></li>
+    <li><h3 data-ng-bind="item.name"></h3></li>
     <li data-ng-bind="item.description"></li>
     <li data-ng-show="item.dueDate">Due date: <span data-ng-bind="item.dueDate"></span></li>
   </ul>
   
   <button type="button" name="editItemButton" data-ng-bind="itemCtrl.editItemButText" data-ng-click="itemCtrl.toggleEditItemVis()"></button>
+  
   <form novalidate data-ng-show="itemCtrl.editItemFormVis">
     <input type="text" name="name"        placeholder="Name: "        data-ng-model="itemCtrl.tempItem.name" required>
     <input type="text" name="description" placeholder="Description: " data-ng-model="itemCtrl.tempItem.description">
     Due date: <input type="date" name="dueDate" data-ng-model="itemCtrl.tempItem.dueDate" />
-    <button type="button" name="deleteItemButton" data-ng-click="itemCtrl.deleteItemHandler()">Delete this item</button>
-    <button type="button" name="editItemButton" data-ng-click="itemCtrl.editItemFormHandler()">Save changes</button>
+    <button type="button" name="deleteItemButton" data-ng-click="itemCtrl.deleteItemHandler()"></button>
+    <button type="button" name="editItemButton"   data-ng-click="itemCtrl.editItemFormHandler()">Save changes</button>
   </form>
   
 </article>

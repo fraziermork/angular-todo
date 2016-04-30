@@ -3,7 +3,7 @@
 
 (function(){
   angular.module('listModule', ['dataServiceModule', 'itemModule'])
-    .controller('listController', ['$log', '$location', '$routeParams', 'dataService', listController])
+    .controller('listController', ['$log', '$scope', '$location', '$routeParams', 'dataService', listController])
     .controller('listSummaryController', ['$log', listSummaryController]);
   
   
@@ -12,7 +12,7 @@
   ////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////
   
-  function listController($log, $location, $routeParams, dataService) {
+  function listController($log, $scope, $location, $routeParams, dataService) {
     //INITIAL VARIABLE DECLARATION
     const vm                  = this;
     vm.listId                 = $routeParams.listId;
@@ -125,14 +125,15 @@
           $log.log('listController addItemFormHandler callback');
           vm.list   = dataService.lists.filter(list => list._id === vm.listId)[0];
           vm.items  = vm.list.items;
+          $scope.$digest();
         });
         
         // Reinitialize conditions
         vm.tempItem = {
-          name: null,
-          description: null,
+          name:         null,
+          description:  null,
           creationDate: null,
-          dueDate: null
+          dueDate:      null
         };
         vm.addItemButText       = 'Make a new item';
         vm.addItemFormVisible   = false;

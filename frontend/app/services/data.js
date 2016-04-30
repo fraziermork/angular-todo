@@ -14,21 +14,23 @@
     dataService.createList  = createList;
     dataService.updateList  = updateList;
     dataService.deleteList  = deleteList;
-    // dataService.getList     = getList;
     
     // CRUD methods for items
-    // dataService.getItem     = getItem;
     dataService.createItem  = createItem;
-    // dataService.updateItem  = updateItem;
+    dataService.updateItem  = updateItem;
     // dataService.deleteItem  = deleteItem;
     
     ////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////
     // Begin Methods
+    ////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    
     
     
     ////////////////////////////////////////////////////////////
     // Helper functions
+    ////////////////////////////////////////////////////////////
     
     function methodToResource(method, resource, data, id) {
       $log.info('dataService methodToResource');
@@ -64,6 +66,7 @@
     
     ////////////////////////////////////////////////////////////
     // List methods
+    ////////////////////////////////////////////////////////////
     
     function getLists(cb) {
       $log.info('dataService getLists');
@@ -91,7 +94,7 @@
         .then((response) => {
           $log.info('create list success');
           // Update the id and creation date to match those stored in the database
-          $log.info('before adding new on, dataService.lists is ');
+          $log.info('before adding new one, dataService.lists is ');
           $log.log(dataService.lists);
           dataService.lists = dataService.lists.map((list) => {
             if (list._id === 'newList') {
@@ -117,32 +120,6 @@
         });
     }
     
-    
-    
-    // function getList(listId, cb) {
-    //   $log.info('dataService getList');
-    //     
-    //   methodToResource('get', 'lists', null, listId)
-    //     .then((data) => {
-    //       // put that list into dataService.lists
-    //       dataService.lists = dataService.lists.map((list) => {
-    //         if (list._id === data._id) {
-    //           return data;
-    //         } else {
-    //           return list;
-    //         }
-    //       });
-    //       cb && cb(null, data);  
-    //     })
-    //     .catch((err) => {
-    //       $log.error('Could not retrieve list with id ' + listId);
-    //       cb && cb(err);  
-    //     });
-    //   
-    // }
-    
-    
-    
     function updateList() {
       $log.info('dataService updateList');
     }
@@ -158,20 +135,20 @@
     
     ////////////////////////////////////////////////////////////
     // Item methods 
-    
-    // function getItem() {
-    //   
-    // }
+    ////////////////////////////////////////////////////////////
     
     function createItem(data, cb) {
       $log.info('dataService createItem');
+      // Eliminate the temp _id from the post object
       methodToResource('post', 'items', {
         name:         data.newItem.name,
         description:  data.newItem.description,
         creationDate: data.newItem.creationDate, 
-        dueDate:      data.newItem.dueDate
+        dueDate:      data.newItem.dueDate,
+        lists:        data.newItem.lists
       })
         .then((response) => {
+          $log.info('SUCCESS CREATING ITEM');
           // Grab the list that the item belongs to 
           let list = dataService.lists.filter((list) => {
             return list._id === data.newItem.lists[0];
@@ -189,6 +166,7 @@
           cb && cb(null, response);
         })
         .catch((err) => {
+          $log.error('ERROR WHILE CREATING ITEM');
           // Grab the list that the item belongs to 
           let list = dataService.lists.filter((list) => {
             return list._id === data.newItem.lists[0];
@@ -204,17 +182,39 @@
     }
     
     
-    // function updateItem() {
-    //   
-    // }
+    function updateItem(data, cb) {
+      $log.info('dataService updateItem');
+      methodToResource('put', 'items', data)
+        .then((response) => {
+          // TODO: refactor in case an item belongs to more than one list?
+          let list = dataService.lists.filter(list => list._id === data.item.lists[0])[0]; 
+          list.items = list.items.map((item) => {
+            if (item._id === data.item._id) {
+              return response;
+            } else {
+              return item;
+            }
+          });
+          cb && cb(response);
+        })
+        .catch((err) => {
+          // TODO: refactor in case an item belongs to more than one list?
+          let list = dataService.lists.filter(list => list._id === data.item.lists[0])[0]; 
+          let item = list.items.filter(item => item._id === data.item._id)[0];
+          item.errorMessage = 'Failed to update this item.';
+          cb && cb(err, item);
+        });
+    }
     
-    // function deleteItem() {
-    //   
-    // }
+    function deleteItem() {
+      $log.info('dataService deleteItem');
+      
+    }
     
     
     
     ////////////////////////////////////////////////////////////
+    // END
     ////////////////////////////////////////////////////////////
     
     return dataService;

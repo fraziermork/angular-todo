@@ -3,24 +3,23 @@
 
 (function(){
   angular.module('itemModule', ['dataServiceModule'])
-    .controller('itemController', ['$log', '$scope', 'dataService', itemController]);
+    .controller('ItemController', ['$log', '$scope', 'dataService', ItemController]);
   
-  function itemController($log, $scope, dataService) {
-    const vm                = this;
-    vm.editItemFormVis      = false;
-    vm.editItemButText      = 'Edit this item';
-    vm.itemId               = $scope.item._id;
-    vm.tempItem             = {};
-    vm.tempItem.name        = $scope.list.name;
-    vm.tempItem.description = $scope.list.description;
-    
-    vm.toggleEditItemVis    = toggleEditItemVis;
-    vm.editItemFormHandler  = editItemFormHandler;
-    vm.deleteItemHandler    = deleteItemHandler;
+  function ItemController($log, $scope, dataService) {
+    const vm                    = this;
+    vm.editItemFormVis          = false;
+    vm.editItemButText          = 'Edit this item';
+    vm.deleteItemButText        = 'Delete this item';
+    vm.itemId                   = $scope.item._id;
+    vm.tempItem                 = {};
+    vm.tempItem.name            = $scope.item.name;
+    vm.tempItem.description     = $scope.item.description;
+    vm.tempItem.dueDate         = $scope.item.dueDate;
+    vm.toggleEditItemVis        = toggleEditItemVis;
+    vm.editItemFormHandler      = editItemFormHandler;
+    vm.deleteItemHandler        = deleteItemHandler;
     
     ////////////////////////////////////////////////////////////
-    
-    
     
     function toggleEditItemVis() {
       $log.log('itemController toggleEditItemVis');
@@ -35,14 +34,29 @@
     
     function editItemFormHandler() {
       $log.log('itemController editItemFormHandler');
-      
-      
+      if (vm.tempItem.name) {
+        // Assign the changes locally
+        $scope.item.name        = vm.tempItem.name;
+        $scope.item.description = vm.tempItem.description;
+        $scope.item.dueDate     = vm.tempItem.dueDate;
+        
+        // Push the changes to the database
+        dataService.updateItem({item: $scope.item, updateIdNeeded: false}, (err, updatedItem) => {
+          $log.log('itemController editItemFormHandler callback');
+          $scope.$digest();
+        });
+      }
     }
     
     function deleteItemHandler() {
       $log.log('itemController deleteItemHandler');
-      
-      
+      if (vm.deleteItemButText === 'Delete this item') {
+        vm.deleteItemButText = 'Click again to confirm.';
+      } else {
+        dataService.deleteItem(vm.itemId, () => {
+          $scope.$digest();
+        });
+      }
     }
   }
   

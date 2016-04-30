@@ -9,8 +9,8 @@
   function listItem() {
     return {
       restrict: 'E',
-      templateUrl: '', 
-      controller: 'itemController', 
+      templateUrl: 'item/item-view.html', 
+      controller: 'ItemController', 
       controllerAs: 'itemCtrl'
     };
   }

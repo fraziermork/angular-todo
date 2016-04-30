@@ -3,7 +3,7 @@
 const express = require('express');
 
 const Item    = require(__dirname + '/../models/item.js');
-const List    = require(__dirname + '/../models/item.js');
+const List    = require(__dirname + '/../models/list.js');
 
 let router    = express.Router();
 
@@ -16,7 +16,7 @@ router.route('/')
       .exec((err, items) => {
         if(err) {
           console.log('Error getting items: ', err);
-          return res.status(500).end({status: 'failure', message: 'Internal server error.'});
+          return res.status(500).end({ status: 'failure', message: 'Internal server error.' });
         } else {
           return res.status(200).json(items);
         }
@@ -25,18 +25,18 @@ router.route('/')
   
   .post((req, res) => {
     console.log('POST items');
-    if(req.body.name){
+    if (req.body.name) {
       let newItem = new Item(req.body);
       newItem.save((err, savedItem) => {
-        if(err) {
+        if (err) {
           console.log('Error saving posted item: ', err);
-          return res.status(404).end({status: 'failure', message: 'Bad request.'});
+          return res.status(404).end({ status: 'failure', message: 'Bad request.' });
         } else {
           console.log(savedItem.name + ' saved.');
-          if (savedItem.lists.length > 0){
+          if (savedItem.lists.length > 0) {
             console.log('Need to add item references to lists.');
             savedItem.lists.forEach((listId) => {
-              List.findOneAndUpdate({_id: listId}, {$push: {'items': savedItem._id}}).exec()
+              List.findOneAndUpdate({ _id: listId }, { $push: { 'items': savedItem._id }}, { new: true }).exec()
                 .then((savedList) => {
                   console.log('Updated ' + savedList.name + ' with reference to object ' + req.body.name + '.');
                   res.status(200).json(savedItem);
