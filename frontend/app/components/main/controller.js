@@ -4,10 +4,10 @@
 (function(){
   // Define the main application and require in dependencies
   // Dependencies start with built-ins, then services, then individual modules
-  var app = angular.module('todo-app', ['ngRoute', 'dataServiceModule', 'itemModule', 'listModule', 'allModule']);
+  var app = angular.module('todo-app', ['ngRoute', 'methodToResourceModule', 'dataServiceModule', 'userModule', 'itemModule', 'listModule', 'allModule']);
   
   //attach controller for main view
-  app.controller('MainController', ['$log', 'dataService', MainController]);
+  app.controller('MainController', ['$log', 'dataService', 'authentication', MainController]);
   
   //attach angular routing
   app.config(['$routeProvider', '$locationProvider', mainRouter]);

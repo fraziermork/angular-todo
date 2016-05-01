@@ -43,6 +43,8 @@
         // Push the changes to the database
         dataService.updateItem({item: $scope.item, updateIdNeeded: false}, (err, updatedItem) => {
           $log.log('itemController editItemFormHandler callback');
+          vm.editItemFormVis    = false;
+          vm.editItemButText    = 'Edit this item';
           $scope.$digest();
         });
       }
