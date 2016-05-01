@@ -3,9 +3,9 @@
 
 (function(){
   angular.module('allModule', ['dataServiceModule', 'listModule'])
-    .controller('allController', ['$log', '$location', '$scope', 'dataService', allController]);
+    .controller('allController', ['$log', '$location', '$route', '$scope', 'dataService', allController]);
   
-  function allController($log, $location, $scope, dataService){
+  function allController($log, $location, $route, $scope, dataService){
     const vm                    = this;
     vm.lists                    = dataService.lists;
     
@@ -20,7 +20,7 @@
     
     vm.addListFormHandler       = addListFormHandler;
     vm.toggleAddListFormVisible = toggleAddListFormVisible;
-    
+    vm.initialize               = initialize;
     
     ////////////////////////////////////////////////////////////
     // Update the lists on the controller
@@ -36,6 +36,18 @@
     
     ////////////////////////////////////////////////////////////
     // Begin methods
+    
+    function initialize() {
+      $log.info('allController initialize');
+      dataService.getLists((err, data) => {
+        if (err) {
+          $location.url('/login');
+          $route.reload();
+        } else {
+          $scope.$digest();
+        }
+      });
+    }
     
     function addListFormHandler() {
       $log.info('allController addListFormHandler');

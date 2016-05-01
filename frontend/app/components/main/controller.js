@@ -25,11 +25,7 @@
     function initialize() {
       $log.info('MainController initialize ');
       vm.test = 'SUCCESS';
-      
-      //TODO: change this once auth implemented
-      dataService.getLists();
     }
-    
   }
   
   ////////////////////////////////////////////////////////
@@ -51,21 +47,21 @@
         controller:   'listController',
         controllerAs: 'listCtrl',
         templateUrl:  'list/list-view.html'
-      });
+      })
       
       /////////////////////////////////////
       // Route for the login / user creation view
-      // .when('/login', {
-      //   controller:    'loginController',
-      //   controllerAs:  'loginCtrl',
-      //   templateUrl:   'login/login-view.html'
-      // });
+      .when('/login', {
+        controller:    'userController',
+        controllerAs:  'userCtrl',
+        templateUrl:   'user/user-view.html'
+      })
       
       /////////////////////////////////////
       // Default to user creation / login view
-      // .otherwise('/', {
-      //   redirectTo: '/login'
-      // });  
+      .otherwise('/', {
+        redirectTo: '/login'
+      });  
   
   
     // TODO: reimplement

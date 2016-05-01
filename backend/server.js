@@ -5,9 +5,9 @@ const express         = require('express');
 const bodyParser      = require('body-parser').json();
 const app             = express();
 
-// const authMiddleware  = require(__dirname + '/lib/authentication');
-// const loginRouter     = require(__dirname + '/routes/lists');
-// const userRouter      = require(__dirname + '/routes/items');
+const authMiddleware  = require(__dirname + '/lib/authenticate');
+const userRouter      = require(__dirname + '/routes/users');
+const loginRouter     = require(__dirname + '/routes/login');
 const listRouter      = require(__dirname + '/routes/lists');
 const itemRouter      = require(__dirname + '/routes/items');
 
@@ -25,19 +25,6 @@ db.on('error', (err) => {
 });
 db.once('open', () => {
   app.use(bodyParser);
-  
-  // /*
-  // // AUTH NOT NEEDED
-  // */
-  
-  // app.use('/login', loginRouter);
-  // app.use(authMiddleware);
-  // app.use('/users', userRouter);
-  
-  // /*
-  // // AUTH REQUIRED 
-  // */
-  
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:' + APP_PORT);
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -45,6 +32,19 @@ db.once('open', () => {
     next();
   });
   
+  
+  // /*
+  // // AUTH NOT NEEDED
+  // */
+  // ROUTES
+  app.use('/users', userRouter);
+  app.use('/login', loginRouter);
+  
+  // /*
+  // // AUTH REQUIRED 
+  // */
+  app.use(authMiddleware);
+  // ROUTES 
   app.use('/lists', listRouter);
   app.use('/items', itemRouter);
   app.listen(API_PORT, () => {

@@ -4,6 +4,7 @@ const express = require('express');
 
 const Item    = require(__dirname + '/../models/item.js');
 const List    = require(__dirname + '/../models/list.js');
+const User    = require(__dirname + '/../models/user.js');
 
 let router    = express.Router();
 

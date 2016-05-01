@@ -1,0 +1,17 @@
+<section>
+  
+  <form class="" novalidate data-ng-hide="userCtrl.createUserFormVis">
+    Username: <input type="text"      name="name"     data-ng-model="userCtrl.username"/>
+    Password: <input type="password"  name="password" data-ng-model="userCtrl.password"/>
+    <button type="button" name="button" data-ng-click="userCtrl.logInUser()">Submit</button>
+  </form>
+
+  <button type="button" name="" data-ng-bind="userCtrl.createUserButtonText" data-ng-click="userCtrl.toggleCreateUsrFormVis()"></button>
+  
+  <form class="" novalidate data-ng-show="userCtrl.createUserFormVis">
+    Username: <input type="text"      name="name"     data-ng-model="userCtrl.newUser.username"/>
+    Password: <input type="password"  name="password" data-ng-model="userCtrl.newUser.password"/>
+    <button type="button" name="button" data-ng-click="userCtrl.createNewUser()">Submit</button>
+  </form>
+  
+</section>

@@ -2,8 +2,8 @@
 /* global angular */
 
 (function(){
-  angular.module('dataServiceModule', ['methodToResourceModule'])
-    .factory('dataService', ['$http', '$log', 'methodToResource', dataService]);
+  angular.module('dataServiceModule', ['methodToResourceModule', 'userModule'])
+    .factory('dataService', ['$http', '$log', 'methodToResource', 'authentication', dataService]);
   
   function dataService($http, $log, methodToResource) {
     const dataService       = {};
