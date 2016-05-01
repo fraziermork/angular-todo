@@ -3,7 +3,7 @@
 
 (function(){
   angular.module('listModule', ['dataServiceModule', 'itemModule'])
-    .controller('listController', ['$log', '$scope', '$location', '$routeParams', 'dataService', listController])
+    .controller('listController', ['$log', '$scope', '$location', '$route', '$routeParams', 'dataService', listController])
     .controller('listSummaryController', ['$log', listSummaryController]);
   
   
@@ -12,7 +12,7 @@
   ////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////
   
-  function listController($log, $scope, $location, $routeParams, dataService) {
+  function listController($log, $scope, $location, $route, $routeParams, dataService) {
     //INITIAL VARIABLE DECLARATION
     const vm                  = this;
     vm.listId                 = $routeParams.listId;
@@ -81,7 +81,7 @@
         vm.editListButText      = 'Edit or delete this list';
         
         // update the list in the database
-        dataService.updateList(vm.listId, vm.list, () => {
+        dataService.updateList({ list: vm.list, updateIdNeeded: false }, () => {
           $log.log('listController editListFormHandler callback');
         });
       } 
@@ -103,7 +103,10 @@
       $log.info('listController deleteListHandler');
       dataService.deleteList(vm.listId, (err) => {
         $log.log('listController deleteListHandler callback');
-        $location.path('/lists');
+        vm.editListButText        = 'Edit or delete this list';
+        vm.editListFormVisible    = false;
+        $location.url('/lists');
+        $route.reload();
       });  
     }
     

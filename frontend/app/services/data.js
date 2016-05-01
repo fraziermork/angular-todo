@@ -18,7 +18,7 @@
     // CRUD methods for items
     dataService.createItem  = createItem;
     dataService.updateItem  = updateItem;
-    // dataService.deleteItem  = deleteItem;
+    dataService.deleteItem  = deleteItem;
     
     ////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////
@@ -120,8 +120,29 @@
         });
     }
     
-    function updateList() {
+    function updateList(data, cb) {
       $log.info('dataService updateList');
+      
+      
+      methodToResource('put', 'lists', data.list, data.list._id)
+      .then((response) => {
+        $log.info('dataService updateList success callback');
+        dataService.lists = dataService.lists.map((list) => {
+          if (list._id === response._id) {
+            return response;
+          } else {
+            return list;
+          }
+        });
+      })
+      .catch((err) => {
+        $log.error('ERROR IN dataService updateList callback', err);
+        let list = dataService.lists.filter((list) => {
+          return list._id === data.list._id;
+        })[0];
+        list.errorMessage = 'Error updating list.';
+      });
+      
     }
     
     
@@ -129,7 +150,18 @@
     
     function deleteList(listId, cb) {
       $log.info('dataService deleteList');
-      cb && cb();
+      dataService.lists = dataService.lists.filter((list) => {
+        return list._id !== listId;
+      });
+      methodToResource('delete', 'lists', null, listId)
+        .then((response) => {
+          $log.info('dataService deleteList');
+          cb && cb(null, response);
+        })
+        .catch((err) => {
+          $log.info('dataService deleteList');
+          cb && cb(err);
+        });
     }
     
     
@@ -207,9 +239,24 @@
         });
     }
     
-    function deleteItem() {
+    function deleteItem(itemToDelete, cb) {
       $log.info('dataService deleteItem');
-      
+      // TODO: make this able to handle items in more than one list.
+      let list = dataService.lists.filter((list) => {
+        return (itemToDelete.lists.indexOf(list._id) !== -1);
+      })[0];
+      list.items = list.items.filter((item) => {
+        return itemToDelete._id !== item._id;
+      });
+      methodToResource('delete', 'items', null, itemToDelete._id)
+      .then((response) => {
+        $log.info('dataService deleteItem callback');
+        cb && cb(null, response);
+      })
+      .catch((err) => {
+        $log.error('ERROR IN dataService deleteItem callback');
+        cb && cb(err);
+      });
     }
     
     

@@ -74,6 +74,7 @@ router.route('/:id')
   
   .put((req, res) => {
     console.log('PUT lists/:id');
+    console.log(req.body);
     List.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}) //TODO: make it update users too
       .populate('items').exec((err, savedList) => {
         if(err) {
